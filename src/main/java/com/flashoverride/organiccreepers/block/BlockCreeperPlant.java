@@ -24,11 +24,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+
+import com.flashoverride.organiccreepers.Config;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 @ParametersAreNonnullByDefault
 public class BlockCreeperPlant extends BlockBush implements IGrowable
 {
-    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
     private static final AxisAlignedBB PLANT_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
     private static final PropertyEnum<EnumBlockPart> PART = PropertyEnum.create("part", EnumBlockPart.class);
 
@@ -43,10 +47,22 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
         setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
+    public float getGrowthRate(World world, BlockPos blockPos)
+    {
+        return (world.isRainingAt(blockPos)) ? Config.growthRate + (world.getRainStrength(Config.rainDelta)) : Config.growthRate;
+    }
+
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos, worldIn.getBlockState(pos));
+    }
+
+    @Override
+    protected boolean canSustainBush(IBlockState state)
+    {
+        if (Loader.isModLoaded("tfc")) return BlocksTFC.isSoil(state);
+        else return super.canSustainBush(state);
     }
 
     @Override
@@ -56,13 +72,13 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
 
         int j = state.getValue(AGE);
 
-        if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
-            if (j == 15)
+            if (j == 3)
             {
                 grow(worldIn, rand, pos, state);
             }
-            else if (j < 15)
+            else if (j < 3)
             {
                 worldIn.setBlockState(pos, state.withProperty(AGE, j + 1).withProperty(PART, getPlantPart(worldIn, pos)));
             }
@@ -172,7 +188,7 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
     @Override
     public int tickRate(World worldIn)
     {
-        return 3;
+        return 10;
     }
 
     @Override

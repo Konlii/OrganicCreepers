@@ -23,7 +23,6 @@ public class EntityCreeperSpore extends Entity implements IProjectile
         super(worldIn);
     }
 
-    @SideOnly(Side.CLIENT)
     public EntityCreeperSpore(World worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
     {
         super(worldIn);
@@ -74,7 +73,6 @@ public class EntityCreeperSpore extends Entity implements IProjectile
                 if (OrganicCreeperBlocks.blockCreeperPlant.canBlockStay(world, blockPos.add(0, -i, 0), OrganicCreeperBlocks.blockCreeperPlant.getDefaultState()))
                 {
                     world.setBlockState(blockPos.add(0, -i, 0), OrganicCreeperBlocks.blockCreeperPlant.getDefaultState());
-                    System.out.println(blockPos.add(0, -i, 0).toString());
                 }
 
                 if (!this.world.isRemote)

@@ -17,7 +17,7 @@ public class WorldGenCreeperPlant
 {
     public static void generate(World worldIn, Random rand, ChunkPos chunkPos)
     {
-        BlockPos blockPos = new BlockPos(chunkPos.getXStart(), worldIn.getHeight(chunkPos.getXStart(), chunkPos.getZStart()), chunkPos.getZStart()).add(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8);
+        BlockPos blockPos = new BlockPos(chunkPos.getXStart(), worldIn.getHeight(chunkPos.getXStart(), chunkPos.getZStart()), chunkPos.getZStart()).add(rand.nextInt(16), 0, rand.nextInt(16));
 
         BlockCreeperPlant blockCreeperPlant = OrganicCreeperBlocks.blockCreeperPlant;
         IBlockState state = blockCreeperPlant.getDefaultState();
@@ -26,14 +26,13 @@ public class WorldGenCreeperPlant
             for (int i = 0; i < 8; i++)
             {
                 blockPos = blockPos.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
-                if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockPos) &&
+                if (worldIn.isAreaLoaded(blockPos, 1) &&
+                        !worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockPos) &&
                         worldIn.isAirBlock(blockPos) &&
                         blockCreeperPlant.canBlockStay(worldIn, blockPos, state))
                 {
-                    state = state.withProperty(BlockCreeperPlant.AGE, rand.nextInt(16));
+                    state = state.withProperty(BlockCreeperPlant.AGE, rand.nextInt(4));
                     worldIn.setBlockState(blockPos, state, 2);
-                    if (rand.nextInt(15) < state.getValue(BlockCreeperPlant.AGE) && blockCreeperPlant.canGrow(worldIn, blockPos, state, worldIn.isRemote))
-                        blockCreeperPlant.grow(worldIn, rand, blockPos, state);
                 }
             }
         }
