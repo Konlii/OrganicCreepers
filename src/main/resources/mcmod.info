@@ -1,0 +1,16 @@
+[
+{
+  "modid": "organiccreepers",
+  "name": "Organic Creepers",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Konlii"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
