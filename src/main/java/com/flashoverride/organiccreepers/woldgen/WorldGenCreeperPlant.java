@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
-import com.flashoverride.organiccreepers.Config;
+import com.flashoverride.organiccreepers.OrganicCreepersConfig;
 import com.flashoverride.organiccreepers.block.BlockCreeperPlant;
 import com.flashoverride.organiccreepers.block.OrganicCreeperBlocks;
 
@@ -21,7 +21,7 @@ public class WorldGenCreeperPlant
 
         BlockCreeperPlant blockCreeperPlant = OrganicCreeperBlocks.blockCreeperPlant;
         IBlockState state = blockCreeperPlant.getDefaultState();
-        if (Config.spawnDensity > 0f && rand.nextFloat() < Config.spawnDensity)
+        if (OrganicCreepersConfig.spawnDensity > 0d && rand.nextDouble() < OrganicCreepersConfig.spawnDensity)
         {
             for (int i = 0; i < 8; i++)
             {

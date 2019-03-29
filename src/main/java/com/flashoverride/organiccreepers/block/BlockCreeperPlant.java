@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 
-import com.flashoverride.organiccreepers.Config;
+import com.flashoverride.organiccreepers.OrganicCreepersConfig;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 
 @ParametersAreNonnullByDefault
@@ -51,9 +51,9 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
         setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(PART, EnumBlockPart.SINGLE));
     }
 
-    public float getGrowthRate(World world, BlockPos blockPos)
+    public double getGrowthRate(World world, BlockPos blockPos)
     {
-        return (world.isRainingAt(blockPos)) ? Config.growthRate + (world.getRainStrength(Config.rainDelta)) : Config.growthRate;
+        return (world.isRainingAt(blockPos)) ? OrganicCreepersConfig.growthRate + (world.getRainStrength((float) OrganicCreepersConfig.rainDelta)) : OrganicCreepersConfig.growthRate;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
 
         int j = state.getValue(AGE);
 
-        if (rand.nextFloat() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true) && canGrow(worldIn, pos, state, worldIn.isRemote))
+        if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true) && canGrow(worldIn, pos, state, worldIn.isRemote))
         {
             if (j == 3)
             {

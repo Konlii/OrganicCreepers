@@ -12,7 +12,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import com.flashoverride.organiccreepers.Config;
+import com.flashoverride.organiccreepers.OrganicCreepersConfig;
 import com.flashoverride.organiccreepers.entity.projectile.EntityCreeperSpore;
 
 public class EventHandler
@@ -44,7 +44,7 @@ public class EventHandler
                 entityCreeperSpore.shoot(0d, 1d, 0d, 0F, 10.0F);
                 if (!world.isRemote) world.spawnEntity(entityCreeperSpore);
             }
-            for (int i = 0; i < Config.sporeCount; i++)
+            for (int i = 0; i < OrganicCreepersConfig.sporeCount; i++)
             {
                 EntityCreeperSpore entityCreeperSpore = new EntityCreeperSpore(world, explosionPos.getX(), explosionPos.getY(), explosionPos.getZ(), e.getExplosion().getExplosivePlacedBy().motionX, e.getExplosion().getExplosivePlacedBy().motionY, e.getExplosion().getExplosivePlacedBy().motionZ);
                 double d0 = rand.nextDouble() - rand.nextDouble();
