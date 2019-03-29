@@ -1,5 +1,6 @@
 package com.flashoverride.organiccreepers.block;
 
+import java.util.List;
 import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,6 +15,8 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -24,6 +27,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 
 import com.flashoverride.organiccreepers.Config;
@@ -138,15 +142,22 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
 
         if (state.getValue(PART) == EnumBlockPart.LOWER)
         {
-            EntityCreeper creeper = new EntityCreeper(worldIn);
-            float yaw = Math.round(rand.nextInt(360) / 90f) * 90f;
-            creeper.setPositionAndRotation(pos.getX() + 0.5d + state.getOffset(worldIn, pos).x, pos.getY(), pos.getZ() + 0.5d + state.getOffset(worldIn, pos).z, yaw, 0);
-            creeper.setRotationYawHead(yaw);
+            List<Entity> entityList = worldIn.getEntitiesWithinAABB(EntityCreeper.class, new AxisAlignedBB(pos.getX() - 32, pos.getY() - 32, pos.getZ() - 32, pos.getX() + 32, pos.getY() + 32, pos.getZ() + 32));
+            for (Biome.SpawnListEntry entity : worldIn.getBiome(pos).getSpawnableList(EnumCreatureType.MONSTER))
+            {
+                if (entity.entityClass.getSimpleName().equals("EntityCreeper") && entityList.size() < entity.maxGroupCount)
+                {
+                    EntityCreeper creeper = new EntityCreeper(worldIn);
+                    float yaw = Math.round(rand.nextInt(360) / 90f) * 90f;
+                    creeper.setPositionAndRotation(pos.getX() + 0.5d + state.getOffset(worldIn, pos).x, pos.getY(), pos.getZ() + 0.5d + state.getOffset(worldIn, pos).z, yaw, 0);
+                    creeper.setRotationYawHead(yaw);
 
-            if (!worldIn.isRemote) worldIn.spawnEntity(creeper);
+                    if (!worldIn.isRemote) worldIn.spawnEntity(creeper);
 
-            worldIn.destroyBlock(pos.up(), false);
-            worldIn.setBlockState(pos, this.getDefaultState());
+                    worldIn.destroyBlock(pos.up(), false);
+                    worldIn.setBlockState(pos, this.getDefaultState());
+                }
+            }
         }
         else
         {
