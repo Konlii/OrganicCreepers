@@ -11,6 +11,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config.LangKey("config." + OrganicCreepers.MODID)
 public class OrganicCreepersConfig
 {
+    @Config.Comment("How many blocks a Creeper Plant will check to see if there are already too many creepers in the area to spawn more")
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.creeperCheckDistance")
+    @Config.RangeInt(min = 0, max = 128)
+    public static int creeperCheckDistance = 32;
+
     @Config.Comment("How fast the Creeper Plant will grow (higher = faster)")
     @Config.RangeDouble(min = 0.0d, max = 1.0d)
     @Config.LangKey("config." + OrganicCreepers.MODID + ".general.growthRate")

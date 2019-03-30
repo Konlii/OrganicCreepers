@@ -142,7 +142,8 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
 
         if (state.getValue(PART) == EnumBlockPart.LOWER)
         {
-            List<Entity> entityList = worldIn.getEntitiesWithinAABB(EntityCreeper.class, new AxisAlignedBB(pos.getX() - 32, pos.getY() - 32, pos.getZ() - 32, pos.getX() + 32, pos.getY() + 32, pos.getZ() + 32));
+            int check = OrganicCreepersConfig.creeperCheckDistance;
+            List<Entity> entityList = worldIn.getEntitiesWithinAABB(EntityCreeper.class, new AxisAlignedBB(pos.getX() - check, pos.getY() - check, pos.getZ() - check, pos.getX() + check, pos.getY() + check, pos.getZ() + check));
             for (Biome.SpawnListEntry entity : worldIn.getBiome(pos).getSpawnableList(EnumCreatureType.MONSTER))
             {
                 if (entity.entityClass.getSimpleName().equals("EntityCreeper") && entityList.size() < entity.maxGroupCount)
