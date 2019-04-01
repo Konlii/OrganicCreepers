@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -273,16 +274,17 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
 
         if (!itemstack.isEmpty() && (itemstack.getItem() == Items.FLINT_AND_STEEL || itemstack.getItem() == Items.FIRE_CHARGE || (Loader.isModLoaded("tfc") && itemstack.getItem() == ItemsTFC.FIRESTARTER)))
         {
-            this.explode(worldIn, pos, state);
-
             if (itemstack.getItem() == Items.FLINT_AND_STEEL || (Loader.isModLoaded("tfc") && itemstack.getItem() == ItemsTFC.FIRESTARTER))
             {
+                worldIn.playSound(playerIn, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, playerIn.getSoundCategory(), 1.0F, worldIn.rand.nextFloat() * 0.4F + 0.8F);
                 itemstack.damageItem(1, playerIn);
             }
             else if (!playerIn.capabilities.isCreativeMode)
             {
                 itemstack.shrink(1);
             }
+
+            this.explode(worldIn, pos, state);
 
             return true;
         }

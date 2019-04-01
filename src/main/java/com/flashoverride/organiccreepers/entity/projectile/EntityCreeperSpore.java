@@ -1,6 +1,5 @@
 package com.flashoverride.organiccreepers.entity.projectile;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +16,6 @@ import com.flashoverride.organiccreepers.block.OrganicCreeperBlocks;
 
 public class EntityCreeperSpore extends Entity implements IProjectile
 {
-
     public EntityCreeperSpore(World worldIn)
     {
         super(worldIn);
@@ -27,6 +25,8 @@ public class EntityCreeperSpore extends Entity implements IProjectile
     {
         super(worldIn);
 
+        this.rotationPitch = this.rand.nextFloat() * 10f;
+        this.rotationYaw = this.rand.nextFloat() * 10f;
         this.setPosition(x, y, z);
         this.motionX = motionX;
         this.motionY = motionY;
@@ -58,28 +58,28 @@ public class EntityCreeperSpore extends Entity implements IProjectile
 
     public void onHit(RayTraceResult rayTraceResult)
     {
-        if (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK)
+        BlockPos blockPos = rayTraceResult.getBlockPos();
+        if (rayTraceResult.typeOfHit == RayTraceResult.Type.ENTITY || (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && !world.getBlockState(blockPos).getBlock().isPassable(world, blockPos)))
         {
-            BlockPos blockPos = rayTraceResult.getBlockPos();
-            if (rayTraceResult.sideHit == EnumFacing.UP)
+            this.motionX = 0d;
+            this.motionY = 0d;
+            this.motionZ = 0d;
+        }
+        if (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && !world.getBlockState(blockPos).getBlock().isPassable(world, blockPos) && rayTraceResult.sideHit == EnumFacing.UP)
+        {
+            int i = 0;
+            while (world.getBlockState(blockPos.add(0, -i, 0)).getBlock().isReplaceable(world, blockPos.add(0, -i, 0)))
             {
-                int i = 0;
-                while (world.getBlockState(blockPos.add(0, -i, 0)).getBlock().isReplaceable(world, blockPos.add(0, -i, 0)))
-                {
-                    world.setBlockToAir(blockPos.add(0, -i, 0));
-                    i++;
-                }
-                i--;
-                if (OrganicCreeperBlocks.blockCreeperPlant.canBlockStay(world, blockPos.add(0, -i, 0), OrganicCreeperBlocks.blockCreeperPlant.getDefaultState()))
-                {
-                    world.setBlockState(blockPos.add(0, -i, 0), OrganicCreeperBlocks.blockCreeperPlant.getDefaultState());
-                }
-
-                if (!this.world.isRemote)
-                {
-                    this.setDead();
-                }
+                world.setBlockToAir(blockPos.add(0, -i, 0));
+                i++;
             }
+            i--;
+            if (OrganicCreeperBlocks.blockCreeperPlant.canBlockStay(world, blockPos.add(0, -i, 0), OrganicCreeperBlocks.blockCreeperPlant.getDefaultState()) && world.getBlockState(blockPos.add(0, -i, 0)).getBlock().isReplaceable(world, blockPos.add(0, -i, 0)))
+            {
+                world.setBlockState(blockPos.add(0, -i, 0), OrganicCreeperBlocks.blockCreeperPlant.getDefaultState());
+            }
+
+            this.setDead();
         }
     }
 
@@ -131,7 +131,7 @@ public class EntityCreeperSpore extends Entity implements IProjectile
         float f1 = 0.99F;
         float f2 = 0.06F;
 
-        if (!this.world.isMaterialInBB(this.getEntityBoundingBox(), Material.AIR))
+        if (this.ticksExisted > 200)
         {
             this.setDead();
         }

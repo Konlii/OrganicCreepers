@@ -2,7 +2,6 @@ package com.flashoverride.organiccreepers.handlers;
 
 import java.util.Random;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -37,13 +36,6 @@ public class EventHandler
 
         if (e.getExplosion().getExplosivePlacedBy() instanceof EntityCreeper)
         {
-            for (Entity entity : e.getAffectedEntities())
-            {
-                BlockPos entityPos = entity.getPosition();
-                EntityCreeperSpore entityCreeperSpore = new EntityCreeperSpore(world, entityPos.getX(), entityPos.getY(), entityPos.getZ(), entity.motionX, entity.motionY, entity.motionZ);
-                entityCreeperSpore.shoot(0d, 1d, 0d, 0F, 10.0F);
-                if (!world.isRemote) world.spawnEntity(entityCreeperSpore);
-            }
             for (int i = 0; i < OrganicCreepersConfig.sporeCount; i++)
             {
                 EntityCreeperSpore entityCreeperSpore = new EntityCreeperSpore(world, explosionPos.getX(), explosionPos.getY(), explosionPos.getZ(), e.getExplosion().getExplosivePlacedBy().motionX, e.getExplosion().getExplosivePlacedBy().motionY, e.getExplosion().getExplosivePlacedBy().motionZ);
