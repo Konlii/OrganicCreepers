@@ -14,7 +14,7 @@ public class OrganicCreepers
 {
     public static final String MODID = "organiccreepers";
     public static final String MODNAME = "Organic Creepers";
-    public static final String MODVERSION = "1.2.0";
+    public static final String MODVERSION = "1.2.1";
 
     @SidedProxy(clientSide = "com.flashoverride.organiccreepers.proxy.ClientProxy", serverSide = "com.flashoverride.organiccreepers.proxy.ServerProxy")
     public static CommonProxy proxy;
