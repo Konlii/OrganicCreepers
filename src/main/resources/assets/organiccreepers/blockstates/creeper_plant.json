@@ -7,16 +7,28 @@
            "apply": { "model": "organiccreepers:creeper_plant", "y": 270 }
        },
        {   "when": { "part": "single", "age": "1" },
-           "apply": { "model": "organiccreepers:creeper_body_shortest"  }
+           "apply": { "model": "organiccreepers:creeper_body_shortest"  },
+           "apply": { "model": "organiccreepers:creeper_body_shortest",  "y": 90 },
+           "apply": { "model": "organiccreepers:creeper_body_shortest",  "y": 180 },
+           "apply": { "model": "organiccreepers:creeper_body_shortest",  "y": 270 }
        },
        {   "when": { "part": "single", "age": "2|3" },
-           "apply": { "model": "organiccreepers:creeper_body_shorter" }
+           "apply": { "model": "organiccreepers:creeper_body_shorter" },
+           "apply": { "model": "organiccreepers:creeper_body_shorter", "y": 90 },
+           "apply": { "model": "organiccreepers:creeper_body_shorter", "y": 180 },
+           "apply": { "model": "organiccreepers:creeper_body_shorter", "y": 270 }
        },
        {   "when": { "part": "lower", "age": "0|1" },
-           "apply": { "model": "organiccreepers:creeper_body_short" }
+           "apply": { "model": "organiccreepers:creeper_body_short" },
+           "apply": { "model": "organiccreepers:creeper_body_short", "y": 90 },
+           "apply": { "model": "organiccreepers:creeper_body_short", "y": 180 },
+           "apply": { "model": "organiccreepers:creeper_body_short", "y": 270 }
        },
        {   "when": { "part": "lower", "age": "2|3" },
-           "apply": { "model": "organiccreepers:creeper_body" }
+           "apply": { "model": "organiccreepers:creeper_body" },
+           "apply": { "model": "organiccreepers:creeper_body", "y": 90 },
+           "apply": { "model": "organiccreepers:creeper_body", "y": 180 },
+           "apply": { "model": "organiccreepers:creeper_body", "y": 270 }
        }
    ]
 }

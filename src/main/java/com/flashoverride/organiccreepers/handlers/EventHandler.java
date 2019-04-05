@@ -19,7 +19,7 @@ public class EventHandler
     @SubscribeEvent
     public void checkSpawn(LivingSpawnEvent.CheckSpawn e)
     {
-        if (e.getEntity().getClass().getSimpleName().equals("EntityCreeper"))
+        if (!OrganicCreepersConfig.enableVanillaSpawning && e.getEntity().getClass().getSimpleName().equals("EntityCreeper"))
         {
             if (e.getSpawner() == null)
                 e.setResult(Event.Result.DENY);
@@ -34,7 +34,7 @@ public class EventHandler
         Random rand = world.rand;
         BlockPos explosionPos = new BlockPos(e.getExplosion().getPosition());
 
-        if (e.getExplosion().getExplosivePlacedBy().getClass().getSimpleName().equals("EntityCreeper"))
+        if (OrganicCreepersConfig.enableCreeperSpores && e.getExplosion().getExplosivePlacedBy().getClass().getSimpleName().equals("EntityCreeper"))
         {
             for (int i = 0; i < OrganicCreepersConfig.sporeCount; i++)
             {

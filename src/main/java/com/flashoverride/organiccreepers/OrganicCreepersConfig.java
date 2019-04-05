@@ -11,10 +11,26 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config.LangKey("config." + OrganicCreepers.MODID)
 public class OrganicCreepersConfig
 {
-    @Config.Comment("How many blocks a Creeper Plant will check to see if there are already too many creepers in the area to spawn more")
+    @Config.Comment("The radius in blocks Creeper Plant will check to see if there are already too many creepers in the area to spawn more (number of creepers is set by biome)")
     @Config.LangKey("config." + OrganicCreepers.MODID + ".general.creeperCheckDistance")
     @Config.RangeInt(min = 0, max = 128)
     public static int creeperCheckDistance = 16;
+
+    @Config.Comment("Enable vanilla creeper spawning")
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.enableVanillaSpawning")
+    public static boolean enableVanillaSpawning = false;
+
+    @Config.Comment("Enable spore generation from creeper explosions")
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.enableCreeperSpores")
+    public static boolean enableCreeperSpores = true;
+
+    @Config.Comment("Enable spread of Creeper Plants without needing creeper explosions (recommend disabling if enableReplanting=true)")
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.enablePlantSpread")
+    public static boolean enablePlantSpread = true;
+
+    @Config.Comment("Enable automatic replanting of Creeper Plant after spawning new creeper")
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.enableReplanting")
+    public static boolean enableReplanting = false;
 
     @Config.Comment("How fast the Creeper Plant will grow (higher = faster)")
     @Config.RangeDouble(min = 0.0d, max = 1.0d)
@@ -35,6 +51,11 @@ public class OrganicCreepersConfig
     @Config.LangKey("config." + OrganicCreepers.MODID + ".general.sporeCount")
     @Config.RangeInt(min = 0, max = 100)
     public static int sporeCount = 10;
+
+    @Config.Comment("If enablePlantSpread=true, how likely the Creeper Plant will spread each update (higher = more likely)")
+    @Config.RangeDouble(min = 0.0d, max = 1.0d)
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.spreadChance")
+    public static double spreadChance = 0.5d;
 
     @SubscribeEvent
     public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)

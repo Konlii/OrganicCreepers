@@ -97,6 +97,12 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
     {
         if (!worldIn.isAreaLoaded(pos, 1)) return;
 
+        if (OrganicCreepersConfig.enablePlantSpread && rand.nextDouble() < OrganicCreepersConfig.spreadChance &&
+                !worldIn.isRemote && worldIn.getLightFromNeighbors(pos) >= 9)
+        {
+            spread(worldIn, rand, pos, state);
+        }
+
         int j = state.getValue(AGE);
 
         if (rand.nextDouble() < getGrowthRate(worldIn, pos) && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true) && canGrow(worldIn, pos, state, worldIn.isRemote))
@@ -197,9 +203,9 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
         {
             int check = OrganicCreepersConfig.creeperCheckDistance;
             List<Entity> entityList = worldIn.getEntitiesWithinAABB(EntityCreeper.class, new AxisAlignedBB(pos.getX() - check, pos.getY() - check, pos.getZ() - check, pos.getX() + check, pos.getY() + check, pos.getZ() + check));
-            for (Biome.SpawnListEntry entity : worldIn.getBiome(pos).getSpawnableList(EnumCreatureType.MONSTER))
+            for (Biome.SpawnListEntry entry : worldIn.getBiome(pos).getSpawnableList(EnumCreatureType.MONSTER))
             {
-                if (entity.entityClass.getSimpleName().equals("EntityCreeper") && entityList.size() < entity.maxGroupCount)
+                if (entry.entityClass.getSimpleName().equals("EntityCreeper") && entityList.size() < entry.maxGroupCount)
                 {
                     EntityCreeper creeper = new EntityCreeper(worldIn);
                     float yaw = Math.round(rand.nextInt(360) / 90f) * 90f;
@@ -209,7 +215,8 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
                     if (!worldIn.isRemote) worldIn.spawnEntity(creeper);
 
                     worldIn.destroyBlock(pos.up(), false);
-                    worldIn.setBlockState(pos, this.getDefaultState());
+                    if (OrganicCreepersConfig.enableReplanting) worldIn.setBlockState(pos, this.getDefaultState());
+                    else worldIn.destroyBlock(pos, false);
                 }
             }
         }
@@ -338,6 +345,34 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
             return true;
         }
         return super.canSustainPlant(state, world, pos, direction, plantable);
+    }
+
+    private void spread(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        if (!worldIn.isAreaLoaded(pos, 4)) return;
+
+        if (state.getValue(PART) == EnumBlockPart.LOWER)
+        {
+            BlockPos blockPos = pos.add(rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(4) - rand.nextInt(4));
+            int check = Math.max(OrganicCreepersConfig.creeperCheckDistance - 1, 0);
+            List<Entity> entityList = worldIn.getEntitiesWithinAABB(EntityCreeper.class, new AxisAlignedBB(blockPos.getX() - check, blockPos.getY() - check, blockPos.getZ() - check, blockPos.getX() + check, blockPos.getY() + check, blockPos.getZ() + check));
+
+            for (Biome.SpawnListEntry entry : worldIn.getBiome(blockPos).getSpawnableList(EnumCreatureType.MONSTER))
+            {
+                if (entry.entityClass.getSimpleName().equals("EntityCreeper") && entityList.size() < entry.maxGroupCount)
+                {
+                    IBlockState soilBlockState = worldIn.getBlockState(blockPos.down());
+
+                    if (!worldIn.provider.isNether() && !worldIn.isOutsideBuildHeight(blockPos) &&
+                            worldIn.getLightFromNeighbors(blockPos) >= 4 && soilBlockState.getLightOpacity(worldIn, blockPos.up()) > 2 &&
+                            worldIn.isAirBlock(blockPos) &&
+                            this.canSustainBush(soilBlockState))
+                    {
+                        worldIn.setBlockState(blockPos, this.getDefaultState());
+                    }
+                }
+            }
+        }
     }
 
     private void explode(World world, BlockPos pos, IBlockState state)
