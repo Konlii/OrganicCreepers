@@ -9,12 +9,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.flashoverride.organiccreepers.proxy.CommonProxy;
 
-@Mod(modid = OrganicCreepers.MODID, name = OrganicCreepers.MODNAME, version = OrganicCreepers.MODVERSION, dependencies = "required-after:forge@[11.16.0.1865,)", useMetadata = true)
+@Mod(modid = OrganicCreepers.MODID, name = OrganicCreepers.MODNAME, version = OrganicCreepers.MODVERSION, dependencies = "required-after:forge@[14.23.3,)", useMetadata = true)
 public class OrganicCreepers
 {
     public static final String MODID = "organiccreepers";
     public static final String MODNAME = "Organic Creepers";
-    public static final String MODVERSION = "1.2.2";
+    public static final String MODVERSION = "1.12.2";
 
     @SidedProxy(clientSide = "com.flashoverride.organiccreepers.proxy.ClientProxy", serverSide = "com.flashoverride.organiccreepers.proxy.ServerProxy")
     public static CommonProxy proxy;
