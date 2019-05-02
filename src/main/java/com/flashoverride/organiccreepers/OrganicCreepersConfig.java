@@ -37,6 +37,11 @@ public class OrganicCreepersConfig
     @Config.LangKey("config." + OrganicCreepers.MODID + ".general.growthRate")
     public static double growthRate = 0.5d;
 
+    @Config.Comment("The percent chance that gunpowder will drop from broken grown Creeper Plants")
+    @Config.RangeDouble(min = 0.0d, max = 1.0d)
+    @Config.LangKey("config." + OrganicCreepers.MODID + ".general.gunpowderDropRate")
+    public static double gunpowderDropRate = 1.0d;
+
     @Config.Comment("Modifier for impact rain has on growth rate (higher = more impact)")
     @Config.RangeDouble(min = 0.0d, max = 1.0d)
     @Config.LangKey("config." + OrganicCreepers.MODID + ".general.rainDelta")

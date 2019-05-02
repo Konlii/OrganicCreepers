@@ -271,7 +271,7 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
         {
             return Items.AIR;
         }
-        return Items.GUNPOWDER;
+        return (rand.nextDouble() < OrganicCreepersConfig.gunpowderDropRate) ? Items.GUNPOWDER : Items.AIR;
     }
 
     @Override
