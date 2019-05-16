@@ -387,22 +387,22 @@ public class BlockCreeperPlant extends BlockBush implements IGrowable
             if (getPlantPart(world, pos) == EnumBlockPart.UPPER && world.getBlockState(pos.down()).getBlock() == this)
             {
                 float f = (world.getBlockState(pos.down()).getValue(AGE) + 1f) / 2f;
-                world.createExplosion(creeper, pos.down().getX() + 0.5d + state.getOffset(world, pos).x, pos.down().getY(), pos.down().getZ() + 0.5d + state.getOffset(world, pos).z, (float) this.explosionRadius * f, flag);
                 world.setBlockToAir(pos);
                 world.setBlockToAir(pos.down());
+                world.createExplosion(creeper, pos.down().getX() + 0.5d + state.getOffset(world, pos).x, pos.down().getY(), pos.down().getZ() + 0.5d + state.getOffset(world, pos).z, (float) this.explosionRadius * f, flag);
             }
             else if (getPlantPart(world, pos) == EnumBlockPart.LOWER)
             {
                 float f = (state.getValue(AGE) + 1f) / 2f;
-                world.createExplosion(creeper, pos.getX() + 0.5d + state.getOffset(world, pos).x, pos.getY(), pos.getZ() + 0.5d + state.getOffset(world, pos).z, (float) this.explosionRadius * f, flag);
                 world.setBlockToAir(pos);
                 world.setBlockToAir(pos.up());
+                world.createExplosion(creeper, pos.getX() + 0.5d + state.getOffset(world, pos).x, pos.getY(), pos.getZ() + 0.5d + state.getOffset(world, pos).z, (float) this.explosionRadius * f, flag);
             }
             else if (getPlantPart(world, pos) == EnumBlockPart.SINGLE)
             {
                 float f = (state.getValue(AGE) + 1f) / 4f;
-                world.createExplosion(creeper, pos.getX() + 0.5d + state.getOffset(world, pos).x, pos.getY(), pos.getZ() + 0.5d + state.getOffset(world, pos).z, (float) this.explosionRadius * f, flag);
                 world.setBlockToAir(pos);
+                world.createExplosion(creeper, pos.getX() + 0.5d + state.getOffset(world, pos).x, pos.getY(), pos.getZ() + 0.5d + state.getOffset(world, pos).z, (float) this.explosionRadius * f, flag);
             }
         }
     }

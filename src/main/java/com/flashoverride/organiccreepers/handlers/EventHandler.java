@@ -37,7 +37,7 @@ public class EventHandler
         {
             for (int i = 0; i < OrganicCreepersConfig.sporeCount; i++)
             {
-                EntityCreeperSpore entityCreeperSpore = new EntityCreeperSpore(world, explosionPos.getX(), explosionPos.getY(), explosionPos.getZ(), e.getExplosion().getExplosivePlacedBy().motionX, e.getExplosion().getExplosivePlacedBy().motionY, e.getExplosion().getExplosivePlacedBy().motionZ);
+                EntityCreeperSpore entityCreeperSpore = new EntityCreeperSpore(world, explosionPos.getX(), explosionPos.getY(), explosionPos.getZ(), e.getExplosion().getExplosivePlacedBy().motionX, e.getExplosion().getExplosivePlacedBy().motionY, e.getExplosion().getExplosivePlacedBy().motionZ, e.getExplosion().getExplosivePlacedBy());
                 double d0 = rand.nextDouble() - rand.nextDouble();
                 double d1 = 2d + rand.nextDouble() - rand.nextDouble();
                 double d2 = rand.nextDouble() - rand.nextDouble();

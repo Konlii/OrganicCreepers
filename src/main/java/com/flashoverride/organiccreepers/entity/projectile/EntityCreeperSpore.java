@@ -1,6 +1,7 @@
 package com.flashoverride.organiccreepers.entity.projectile;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -16,15 +17,18 @@ import com.flashoverride.organiccreepers.block.OrganicCreeperBlocks;
 
 public class EntityCreeperSpore extends Entity implements IProjectile
 {
+    private Entity creeper;
+
     public EntityCreeperSpore(World worldIn)
     {
         super(worldIn);
     }
 
-    public EntityCreeperSpore(World worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
+    public EntityCreeperSpore(World worldIn, double x, double y, double z, double motionX, double motionY, double motionZ, EntityLivingBase creeper)
     {
         super(worldIn);
 
+        this.creeper = creeper;
         this.rotationPitch = this.rand.nextFloat() * 10f;
         this.rotationYaw = this.rand.nextFloat() * 10f;
         this.setPosition(x, y, z);
@@ -59,7 +63,7 @@ public class EntityCreeperSpore extends Entity implements IProjectile
     public void onHit(RayTraceResult rayTraceResult)
     {
         BlockPos blockPos = rayTraceResult.getBlockPos();
-        if (rayTraceResult.typeOfHit == RayTraceResult.Type.ENTITY || (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && !world.getBlockState(blockPos).getBlock().isPassable(world, blockPos)))
+        if ((rayTraceResult.typeOfHit == RayTraceResult.Type.ENTITY && rayTraceResult.entityHit != null && rayTraceResult.entityHit != creeper) || (rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK && !world.getBlockState(blockPos).getBlock().isPassable(world, blockPos)))
         {
             this.motionX = 0d;
             this.motionY = 0d;
